@@ -5,6 +5,8 @@ export const BYTES: number = 32;
 
 /** A class representation of the SHA256 algorithm. */
 export class SHA256 {
+  readonly hashSize: number = BYTES;
+
   private _buf: Uint8Array;
   private _bufIdx: number;
   private _count: Uint32Array;
@@ -34,11 +36,6 @@ export class SHA256 {
       0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
     ]);
     this.init();
-  }
-
-  /** Generates a SHA256 hash of the input data. */
-  static hash(msg?: string | Uint8Array): Uint8Array {
-    return new SHA256().digest(msg);
   }
 
   /** Initializes a hash. */
@@ -194,4 +191,9 @@ export class SHA256 {
     h[6] = (h[6] + h6) | 0;
     h[7] = (h[7] + h7) | 0;
   }
+}
+
+/** Generates a SHA256 hash of the input data. */
+export function sha256(msg?: string | Uint8Array): Uint8Array {
+  return new SHA256().digest(msg);
 }
