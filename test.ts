@@ -33,7 +33,7 @@ const testVectors: TestVector[] = JSON.parse(
 
 testVectors.forEach(({ msg, msg_bit_len, hash }: TestVector) => {
   test({
-    name: `SHA256 ${msg_bit_len ? msg_bit_len / 8 : 0}-byte msg`,
+    name: `SHA2-256 ${msg_bit_len ? msg_bit_len / 8 : 0}-byte msg`,
     fn(): void {
       assertEquals(sha256(msg), hash);
     }
