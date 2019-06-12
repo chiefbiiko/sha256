@@ -22,13 +22,13 @@ Creates a new SHA2-256 instance.
 
 Initializes a hash instance.
 
-#### `SHA256#update(msg?: string | Uint8Array): SHA256`
+#### `SHA256#update(msg?: string | Uint8Array, inputEncoding?: string): SHA256`
 
-Updates a hash with additional data.
+Updates a hash with additional data. `inputEncoding` can be one of `"utf8"`, `"hex"`, or `"base64"`.
 
-#### `SHA256#digest(msg?: string | Uint8Array): Uint8Array`
+#### `SHA256#digest(outputEncoding?: string): string | Uint8Array`
 
-Finalizes the hash, optionally with additional message data.
+Finalizes the hash.  `outputEncoding` can be one of `"utf8"`, `"hex"`, or `"base64"`. If it is omitted a `Uint8Array` is returned.
 
 #### `sha256(msg: string | Uint8Array): Uint8Array`
 
