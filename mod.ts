@@ -15,6 +15,7 @@ export class SHA256 {
   private _count: Uint32Array;
   private _K: Uint32Array;
   private _H: Uint32Array;
+  private _finalized: boolean;
 
   /** Creates a SHA256 instance. */
   constructor() {
@@ -54,6 +55,7 @@ export class SHA256 {
     this._bufIdx = 0;
     this._count = new Uint32Array(2);
     this._buf.fill(0);
+    this._finalized = false;
 
     return this;
   }
@@ -91,6 +93,12 @@ export class SHA256 {
 
   /** Finalizes the hash with additional message data. */
   digest(outputEncoding?: string): string | Uint8Array {
+    if (this._finalized) {
+      throw new Error("digest has already been called.")
+    }
+    
+    this._finalized = true;
+
     // append '1'
     const b: Uint8Array = this._buf;
     let idx: number = this._bufIdx;
