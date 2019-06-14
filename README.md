@@ -28,9 +28,9 @@ Updates a hash with additional data. `inputEncoding` can be one of `"utf8"`, `"h
 
 #### `SHA256#digest(outputEncoding?: string): string | Uint8Array`
 
-Finalizes the hash.  `outputEncoding` can be one of `"utf8"`, `"hex"`, or `"base64"`. If it is omitted a `Uint8Array` is returned.
+Finalizes the hash. `outputEncoding` can be one of `"utf8"`, `"hex"`, or `"base64"`. If it is omitted a `Uint8Array` is returned.
 
-#### `sha256(msg: string | Uint8Array): Uint8Array`
+#### `sha256(msg: string | Uint8Array, inputEncoding?: string, outputEncoding?: string,): Uint8Array`
 
 Convenience function for hashing singular data.
 

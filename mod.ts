@@ -221,7 +221,7 @@ export class SHA256 {
 
 /** Generates a SHA256 hash of the input data. */
 export function sha256(
-  msg?: string | Uint8Array,
+  msg: string | Uint8Array,
   inputEncoding?: string,
   outputEncoding?: string
 ): string | Uint8Array {
