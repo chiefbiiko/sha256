@@ -1,4 +1,7 @@
-import { encode, decode } from "https://denopkg.com/chiefbiiko/std-encoding/mod.ts";
+import {
+  encode,
+  decode
+} from "https://denopkg.com/chiefbiiko/std-encoding/mod.ts";
 
 /** Byte length of a SHA256 hash. */
 export const BYTES: number = 32;
@@ -16,7 +19,7 @@ export class SHA256 {
   /** Creates a SHA256 instance. */
   constructor() {
     this._buf = new Uint8Array(64);
-    
+
     // prettier-ignore
     this._K = new Uint32Array([
       0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
@@ -36,7 +39,7 @@ export class SHA256 {
       0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
       0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
     ]);
-    
+
     this.init();
   }
 
@@ -47,42 +50,42 @@ export class SHA256 {
       0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
       0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
     ]);
-    
+
     this._bufIdx = 0;
     this._count = new Uint32Array(2);
     this._buf.fill(0);
-    
+
     return this;
   }
 
   /** Updates the hash with additional message data. */
   update(msg: string | Uint8Array, inputEncoding?: string): SHA256 {
     if (msg === null) {
-      throw new TypeError("msg must be a string or Uint8Array.")
+      throw new TypeError("msg must be a string or Uint8Array.");
     } else if (typeof msg === "string") {
       msg = encode(msg, inputEncoding) as Uint8Array;
     }
-    
+
     // process the msg as many times as possible, the rest is stored in the buffer
     // message is processed in 512 bit (64 byte chunks)
     for (let i: number = 0, len = msg.length; i < len; i++) {
       this._buf[this._bufIdx++] = msg[i];
-      
+
       if (this._bufIdx === 64) {
         this._transform();
         this._bufIdx = 0;
       }
     }
-    
+
     // counter update (number of message bits)
     const c: Uint32Array = this._count;
-    
+
     if ((c[0] += msg.length << 3) < msg.length << 3) {
       c[1]++;
     }
-    
+
     c[1] += msg.length >>> 29;
-    
+
     return this;
   }
 
@@ -92,7 +95,7 @@ export class SHA256 {
     const b: Uint8Array = this._buf;
     let idx: number = this._bufIdx;
     b[idx++] = 0x80;
-    
+
     // zeropad up to byte pos 56
     while (idx !== 56) {
       if (idx === 64) {
@@ -101,10 +104,10 @@ export class SHA256 {
       }
       b[idx++] = 0;
     }
-    
+
     // append length in bits
     const c: Uint32Array = this._count;
-    
+
     b[56] = (c[1] >>> 24) & 0xff;
     b[57] = (c[1] >>> 16) & 0xff;
     b[58] = (c[1] >>> 8) & 0xff;
@@ -113,12 +116,12 @@ export class SHA256 {
     b[61] = (c[0] >>> 16) & 0xff;
     b[62] = (c[0] >>> 8) & 0xff;
     b[63] = (c[0] >>> 0) & 0xff;
-    
+
     this._transform();
-    
+
     // return the hash as byte array
     const hash: Uint8Array = new Uint8Array(BYTES);
-    
+
     // let i: number;
     for (let i: number = 0; i < 8; i++) {
       hash[(i << 2) + 0] = (this._H[i] >>> 24) & 0xff;
@@ -126,17 +129,17 @@ export class SHA256 {
       hash[(i << 2) + 2] = (this._H[i] >>> 8) & 0xff;
       hash[(i << 2) + 3] = (this._H[i] >>> 0) & 0xff;
     }
-    
+
     // clear internal states and prepare for new hash
     this.init();
-    
+
     return outputEncoding ? decode(hash, outputEncoding) : hash;
   }
 
   /** Performs one transformation cycle. */
   private _transform(): void {
     const h: Uint32Array = this._H;
-    
+
     let h0: number = h[0];
     let h1: number = h[1];
     let h2: number = h[2];
@@ -145,11 +148,11 @@ export class SHA256 {
     let h5: number = h[5];
     let h6: number = h[6];
     let h7: number = h[7];
-    
+
     // convert byte buffer into w[0..15]
     const w: Uint32Array = new Uint32Array(16);
     let i: number;
-    
+
     for (i = 0; i < 16; i++) {
       w[i] =
         this._buf[(i << 2) + 3] |
@@ -157,7 +160,7 @@ export class SHA256 {
         (this._buf[(i << 2) + 1] << 16) |
         (this._buf[i << 2] << 24);
     }
-    
+
     for (i = 0; i < 64; i++) {
       let tmp: number;
       if (i < 16) {
@@ -172,7 +175,7 @@ export class SHA256 {
             w[(i + 9) & 15]) |
           0;
       }
-      
+
       tmp =
         (tmp +
           h7 +
@@ -204,7 +207,7 @@ export class SHA256 {
             (h1 << 10))) |
         0;
     }
-    
+
     h[0] = (h[0] + h0) | 0;
     h[1] = (h[1] + h1) | 0;
     h[2] = (h[2] + h2) | 0;
@@ -217,6 +220,10 @@ export class SHA256 {
 }
 
 /** Generates a SHA256 hash of the input data. */
-export function sha256(msg?: string | Uint8Array, inputEncoding?: string, outputEncoding?: string): string | Uint8Array {
+export function sha256(
+  msg?: string | Uint8Array,
+  inputEncoding?: string,
+  outputEncoding?: string
+): string | Uint8Array {
   return new SHA256().update(msg, inputEncoding).digest(outputEncoding);
 }
