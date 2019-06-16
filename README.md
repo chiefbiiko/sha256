@@ -9,7 +9,7 @@ SHA2-256 for [`deno`](https://deno.land).
 ``` ts
 import { sha256 } from "https://denopkg.com/chiefbiiko/sha256/mod.ts";
 
-console.log('SHA2-256 of ""', sha256(""))
+console.log('SHA2-256 of ""', sha256("", "utf8", "hex"))
 ```
 
 ## API
@@ -22,7 +22,7 @@ Creates a new SHA2-256 instance.
 
 Initializes a hash instance.
 
-#### `SHA256#update(msg?: string | Uint8Array, inputEncoding?: string): SHA256`
+#### `SHA256#update(msg: string | Uint8Array, inputEncoding?: string): SHA256`
 
 Updates a hash with additional data. `inputEncoding` can be one of `"utf8"`, `"hex"`, or `"base64"`.
 
