@@ -1,7 +1,7 @@
 import {
   encode,
   decode
-} from "https://denopkg.com/chiefbiiko/std-encoding/mod.ts";
+} from "https://denopkg.com/chiefbiiko/std-encoding@v1.0.0/mod.ts";
 
 /** Byte length of a SHA256 hash. */
 export const BYTES: number = 32;
