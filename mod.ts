@@ -11,11 +11,11 @@ export class SHA256 {
   readonly hashSize: number = BYTES;
 
   private _buf: Uint8Array;
-  private _bufIdx: number;
-  private _count: Uint32Array;
+  private _bufIdx!: number;
+  private _count!: Uint32Array;
   private _K: Uint32Array;
-  private _H: Uint32Array;
-  private _finalized: boolean;
+  private _H!: Uint32Array;
+  private _finalized!: boolean;
 
   /** Creates a SHA256 instance. */
   constructor() {
@@ -96,7 +96,7 @@ export class SHA256 {
     if (this._finalized) {
       throw new Error("digest has already been called.")
     }
-    
+
     this._finalized = true;
 
     // append '1'
