@@ -1,4 +1,4 @@
-import { assertEquals } from "./deps.ts";
+import { assertEquals } from "https://deno.land/std@v0.34.0/testing/asserts.ts";
 import { sha256 } from "./mod.ts";
 
 interface TestVector {
